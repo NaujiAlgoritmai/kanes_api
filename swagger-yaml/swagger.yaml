@@ -200,8 +200,7 @@ paths:
       tags:
       - "Service"
       summary: "Server heartbeat operation"
-      description: "This operation shows how to override the global security defined\
-        \ above, as we want to open it up for all users."
+      description: "Ping pong"
       parameters: []
       responses:
         200:
