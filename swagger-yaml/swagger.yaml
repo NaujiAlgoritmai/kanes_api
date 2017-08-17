@@ -143,12 +143,38 @@ paths:
         '400':
           description: bad request.
           schema:
-            $ref: '#/definitions/ApiError'
+            $ref: '#/definitions/ApiError'            
+  /reservations/confirm:
+    post:
+      tags:
+        - Reservation
+      summary: Post reservations to confirm reservation
+      parameters:
+        - name: X-ApiKey
+          in: header
+          description: API key from /user/login
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: 'One or more reservations, post in body as json array'
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ReservationConfirm'
+      responses:
+        '200':
+          description: successful operation.
+        '400':
+          description: bad request.
+          schema:
+            $ref: '#/definitions/ApiError'  
   /reservation:
     post:
       tags:
         - Reservation
-      summary: 'Post reservations, after they are paid'
+      summary: 'Post reservations'
       parameters:
         - name: X-ApiKey
           in: header
@@ -298,6 +324,18 @@ definitions:
         type: integer
         example: 1
         description: Sport court id
+      status:
+        type: string
+        example: paid | not_paid
+        description: Status of current reservation
+  ReservationConfirm:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int64
+        example: 1
+        description: Confirm paid reservation ID
   User:
     type: object
     properties:
