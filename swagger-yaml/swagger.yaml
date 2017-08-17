@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: API for sport arena bookings
-  version: 1.0.1
+  version: 1.0.2
   title: Kanes API
 host: reservations.someserver.ltd
 basePath: /na/KanesAPI/1.0.0
