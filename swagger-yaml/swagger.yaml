@@ -1,323 +1,372 @@
----
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "API for sport arena bookings"
-  version: "1.0.0"
-  title: "Kanes API"
-host: "reservations.someserver.ltd"
-basePath: "/na/KanesAPI/1.0.0"
+  description: API for sport arena bookings
+  version: 1.0.1
+  title: Kanes API
+host: reservations.someserver.ltd
+basePath: /na/KanesAPI/1.0.0
 tags:
-- name: "Reservation"
-  description: "Reservation API part"
-- name: "User"
-  description: "User management"
-- name: "Service"
-  description: "Misc"
+  - name: Reservation
+    description: Reservation API part
+  - name: User
+    description: User management
+  - name: Service
+    description: Misc
 schemes:
-- "https"
+  - https
 paths:
   /user:
     post:
       tags:
-      - "User"
-      summary: "Create user"
+        - User
+      summary: Create user
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
+        - in: body
+          name: body
+          description: Created user object
+          required: true
+          schema:
+            $ref: '#/definitions/User'
       responses:
-        200:
-          description: "successful operation."
+        '200':
+          description: successful operation.
           schema:
-            $ref: "#/definitions/ApiKey"
-        400:
-          description: "successful operation."
+            $ref: '#/definitions/ApiKey'
+        '400':
+          description: successful operation.
           schema:
-            $ref: "#/definitions/ApiError"
+            $ref: '#/definitions/ApiError'
   /user/reservations:
     get:
       tags:
-      - "User"
-      summary: "Get logged user reservations as json array, 0 to many"
+        - User
+      summary: 'Get logged user reservations as json array, 0 to many'
       consumes:
-      - "application/json"
+        - application/json
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "X-ApiKey"
-        in: "header"
-        description: "API key from /user/login"
-        required: true
-        type: "string"
+        - name: X-ApiKey
+          in: header
+          description: API key from /user/login
+          required: true
+          type: string
       responses:
-        200:
-          description: "successful operation."
+        '200':
+          description: successful operation.
           schema:
-            type: "array"
+            type: array
             items:
-              $ref: "#/definitions/Reservation"
-        400:
-          description: "successful operation."
+              $ref: '#/definitions/Reservation'
+        '400':
+          description: successful operation.
           schema:
-            $ref: "#/definitions/ApiError"
+            $ref: '#/definitions/ApiError'
   /user/login:
     get:
       tags:
-      - "User"
-      summary: "Logs user into the system"
+        - User
+      summary: Logs user into the system
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "email"
-        in: "query"
-        description: "The email for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
+        - name: email
+          in: query
+          description: The email for login
+          required: true
+          type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          type: string
       responses:
-        200:
-          description: "successful operation."
+        '200':
+          description: successful operation.
           schema:
-            $ref: "#/definitions/ApiKey"
-        400:
-          description: "bad request."
+            $ref: '#/definitions/ApiKey'
+        '400':
+          description: bad request.
           schema:
-            $ref: "#/definitions/ApiError"
+            $ref: '#/definitions/ApiError'
   /user/logout:
     get:
       tags:
-      - "User"
-      summary: "Logs out current logged in user session"
+        - User
+      summary: Logs out current logged in user session
       produces:
-      - "application/json"
+        - application/json
       parameters:
-      - name: "X-ApiKey"
-        in: "header"
-        description: "API key from /user/login"
-        required: true
-        type: "string"
+        - name: X-ApiKey
+          in: header
+          description: API key from /user/login
+          required: true
+          type: string
       responses:
         default:
-          description: "successful operation."
-  /reservations/{date}/{sport_id}:
+          description: successful operation.
+  '/reservations/{date}/{sport_id}':
     get:
       tags:
-      - "Reservation"
-      summary: "Get reservations"
-      description: "Returns all reservations for current sport and date"
+        - Reservation
+      summary: Get reservations
+      description: Returns all reservations for current sport and date
       parameters:
-      - name: "date"
-        in: "path"
-        description: "Date of interest"
-        required: true
-        type: "string"
-        format: "date"
-      - name: "sport_id"
-        in: "path"
-        description: "Sport ID"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "X-ApiKey"
-        in: "header"
-        description: "API key from /user/login"
-        required: true
-        type: "string"
+        - name: date
+          in: path
+          description: Date of interest
+          required: true
+          type: string
+          format: date
+        - name: sport_id
+          in: path
+          description: Sport ID
+          required: true
+          type: string
+          format: string
+        - name: X-ApiKey
+          in: header
+          description: API key from /user/login
+          required: true
+          type: string
       responses:
-        200:
-          description: "successful operation."
+        '200':
+          description: successful operation.
           schema:
-            type: "array"
+            type: array
             items:
-              $ref: "#/definitions/ReservationCalendar"
-        400:
-          description: "bad request."
+              $ref: '#/definitions/ReservationCalendar'
+        '400':
+          description: bad request.
           schema:
-            $ref: "#/definitions/ApiError"
+            $ref: '#/definitions/ApiError'
   /reservation:
     post:
       tags:
-      - "Reservation"
-      summary: "Post reservations, after they are paid"
+        - Reservation
+      summary: 'Post reservations, after they are paid'
       parameters:
-      - name: "X-ApiKey"
-        in: "header"
-        description: "API key from /user/login"
-        required: true
-        type: "string"
-      - in: "body"
-        name: "body"
-        description: "One or more reservations, post in body as json array"
-        required: true
-        schema:
-          type: "array"
-          items:
-            $ref: "#/definitions/Reservation"
-      responses:
-        200:
-          description: "successful operation."
-        400:
-          description: "bad request."
+        - name: X-ApiKey
+          in: header
+          description: API key from /user/login
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: 'One or more reservations, post in body as json array'
+          required: true
           schema:
-            $ref: "#/definitions/ApiError"
-  /reservation/{id}:
+            type: array
+            items:
+              $ref: '#/definitions/Reservation'
+      responses:
+        '200':
+          description: successful operation.
+        '400':
+          description: bad request.
+          schema:
+            $ref: '#/definitions/ApiError'
+  '/reservation/{id}':
     delete:
       tags:
-      - "Reservation"
-      summary: "Delete reservation"
+        - Reservation
+      summary: Delete reservation
       parameters:
-      - name: "X-ApiKey"
-        in: "header"
-        description: "API key from /user/login"
-        required: true
-        type: "string"
-      - name: "id"
-        in: "path"
-        description: "Reservation ID"
-        required: true
-        type: "string"
-        format: "date"
+        - name: X-ApiKey
+          in: header
+          description: API key from /user/login
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Reservation ID
+          required: true
+          type: string
+          format: date
       responses:
-        200:
-          description: "successful operation."
-        400:
-          description: "bad request."
+        '200':
+          description: successful operation.
+        '400':
+          description: bad request.
           schema:
-            $ref: "#/definitions/ApiError"
+            $ref: '#/definitions/ApiError'
   /ping:
     get:
       tags:
-      - "Service"
-      summary: "Server heartbeat operation"
-      description: "This operation shows how to override the global security defined\
-        \ above, as we want to open it up for all users."
+        - Service
+      summary: Server heartbeat operation
+      description: >-
+        This operation shows how to override the global security defined above,
+        as we want to open it up for all users.
       parameters: []
       responses:
-        200:
-          description: "successful operation."
-        400:
-          description: "bad request."
+        '200':
+          description: successful operation.
+        '400':
+          description: bad request.
           schema:
-            $ref: "#/definitions/ApiError"
+            $ref: '#/definitions/ApiError'
+  /sports:
+    get:
+      tags:
+        - Sports
+      summary: Get Sports List
+      description: Returns all Sports with Court list in each
+      parameters: []
+      responses:
+        '200':
+          description: successful operation.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Sport'
+        '400':
+          description: bad request.
+          schema:
+            $ref: '#/definitions/ApiError'
 definitions:
   ReservationCalendar:
-    type: "object"
+    type: object
     properties:
       date:
-        type: "string"
-        format: "date"
-        example: "2017-10-10"
-        description: "Reservation date"
+        type: string
+        format: date
+        example: '2017-10-10'
+        description: Reservation date
       sport_id:
-        type: "integer"
-        example: 10
-        description: "ID for sport"
+        type: string
+        example: '10'
+        description: ID for sport
       hour_from:
-        type: "string"
-        example: "1030"
-        description: "Ym format"
+        type: string
+        example: '1030'
+        description: Ym format
       hour_to:
-        type: "string"
-        example: "1030"
-        description: "Ym format"
+        type: string
+        example: '1030'
+        description: Ym format
       price:
-        type: "string"
-        example: "1000"
-        description: "Price in euro cents for current period"
+        type: string
+        example: '1000'
+        description: Price in euro cents for current period
       availability:
-        type: "boolean"
+        type: boolean
         example: true
-        description: "true | false"
+        description: true | false
       court_id:
-        type: "integer"
+        type: integer
         example: 1
-        description: "Sport court id"
+        description: Sport court id
       court_title:
-        type: "string"
-        example: "Aikštė 1"
-        description: "Title for court"
+        type: string
+        example: Aikštė 1
+        description: Title for court
   Reservation:
-    type: "object"
+    type: object
     properties:
       date:
-        type: "string"
-        format: "date"
-        example: "2017-10-10"
-        description: "Reservation date"
+        type: string
+        format: date
+        example: '2017-10-10'
+        description: Reservation date
       paid_date:
-        type: "string"
-        format: "datetime"
-        example: "2017-10-10 18:10:15"
-        description: "Payment acceptance datetime"
+        type: string
+        format: datetime
+        example: '2017-10-10 18:10:15'
+        description: Payment acceptance datetime
       paid_sum:
-        type: "string"
-        example: "5030"
-        description: "Paid sum in euro cents"
+        type: string
+        example: '5030'
+        description: Paid sum in euro cents
       sport_id:
-        type: "integer"
-        example: 10
-        description: "ID for sport"
+        type: string
+        example: '10'
+        description: ID for sport
       hour_from:
-        type: "string"
-        example: "1030"
-        description: "Ym format"
+        type: string
+        example: '1030'
+        description: Ym format
       hour_to:
-        type: "string"
-        example: "1030"
-        description: "Ym format"
+        type: string
+        example: '1030'
+        description: Ym format
       court_id:
-        type: "integer"
+        type: integer
         example: 1
-        description: "Sport court id"
+        description: Sport court id
   User:
-    type: "object"
+    type: object
     properties:
       firstName:
-        type: "string"
+        type: string
       lastName:
-        type: "string"
+        type: string
       email:
-        type: "string"
+        type: string
       password:
-        type: "string"
+        type: string
       phone:
-        type: "string"
+        type: string
       enterprise:
-        $ref: "#/definitions/Enterprise"
+        $ref: '#/definitions/Enterprise'
   Enterprise:
-    type: "object"
+    type: object
     properties:
       title:
-        type: "string"
+        type: string
       code:
-        type: "string"
+        type: string
       vat:
-        type: "string"
+        type: string
       address:
-        type: "string"
+        type: string
       phone:
-        type: "string"
+        type: string
   ApiKey:
-    type: "object"
+    type: object
     properties:
       api_key:
-        type: "string"
+        type: string
   ApiError:
-    type: "object"
+    type: object
     properties:
       code:
-        type: "integer"
-        format: "int64"
+        type: integer
+        format: int64
       msg:
-        type: "string"
+        type: string
+  Court:
+    type: object
+    properties:
+      code:
+        type: string
+        example: KRA-1
+        description: Court Code
+      name:
+        type: string
+        example: Krepšinio aikštelė Nr. 1
+        description: Court Name
+      'no':
+        type: integer
+        example: 1
+        description: Court Number
+  Sport:
+    type: object
+    properties:
+      sport_id:
+        type: string
+        example: '1'
+        description: Sport ID
+      sport_name:
+        type: string
+        example: Krepšinis
+        description: Sport Name
+      courts:
+        type: array
+        description: List of Courts
+        items:
+          $ref: '#/definitions/Court'
