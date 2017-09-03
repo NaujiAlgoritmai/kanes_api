@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   description: API for sport arena bookings
-  version: 1.0.2
+  version: 1.0.3
   title: Kanes API
 host: reservations.someserver.ltd
 basePath: /na/KanesAPI/1.0.0
@@ -148,7 +148,7 @@ paths:
     post:
       tags:
         - Reservation
-      summary: Post reservations to confirm reservation
+      summary: Post to confirm reservation
       parameters:
         - name: X-ApiKey
           in: header
@@ -157,11 +157,9 @@ paths:
           type: string
         - in: body
           name: body
-          description: 'One or more reservations, post in body as json array'
+          description: 'One reservation, post in body'
           required: true
           schema:
-            type: array
-            items:
               $ref: '#/definitions/ReservationConfirm'
       responses:
         '200':
@@ -170,7 +168,7 @@ paths:
           description: bad request.
           schema:
             $ref: '#/definitions/ApiError'  
-  /reservation:
+  /reservation/post:
     post:
       tags:
         - Reservation
@@ -188,10 +186,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Reservation'
+              $ref: '#/definitions/ReservationPost'
       responses:
         '200':
           description: successful operation.
+          schema:
+            $ref: '#/definitions/ReservationID'
         '400':
           description: bad request.
           schema:
@@ -328,14 +328,55 @@ definitions:
         type: string
         example: paid | not_paid
         description: Status of current reservation
+  ReservationPost:
+    type: object
+    properties:
+      date:
+        type: string
+        format: date
+        example: '2017-10-10'
+        description: Reservation date
+      pmt_sum:
+        type: string
+        example: '5030'
+        description: Payment sum in euro cents
+      sport_id:
+        type: string
+        example: '10'
+        description: ID for sport
+      hour_from:
+        type: string
+        example: '1030'
+        description: Ym format
+      hour_to:
+        type: string
+        example: '1030'
+        description: Ym format
+      court_id:
+        type: integer
+        example: 1
+        description: Sport court id
+  ReservationID:
+    type: object
+    properties:
+      id:
+        type: string		
   ReservationConfirm:
     type: object
     properties:
       id:
-        type: number
-        format: int64
-        example: 1
+        type: string
+        example: 'PT1234'
         description: Confirm paid reservation ID
+      paid_date:
+        type: string
+        format: datetime
+        example: '2017-10-10 18:10:15'
+        description: Payment acceptance datetime	
+      paid_sum:
+        type: string
+        example: '5030'
+        description: Paid sum in euro cents			
   User:
     type: object
     properties:
